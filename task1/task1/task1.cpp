@@ -75,25 +75,27 @@ void addStruct(Book*& arr, int& size, Book& item) {
 
 void showData(Book* arr, int& size) {
 	for (int i = 0; i < size; i++) {
+		std::cout << "\n";
 		std::cout << "ID: " << arr[i].id << "\t";
 		std::cout << "Author: " << arr[i].author << "\t";
 		std::cout << "Name: " << arr[i].name << "\t";
 		std::cout << "Year: " << arr[i].year << "\t";
 		std::cout << "Company: " << arr[i].company << "\t";
 		std::cout << "Pages: " << arr[i].pages << "\t";
-		std::cout << "\n";
+		std::cout << "\n\n";
 	}
 }
 
 void showData(Book** arr, int& size, const int& start) {
 	for (int i = start; i < size; i++) {
+		std::cout << "\n";
 		std::cout << "ID: " << arr[i]->id << "\t";
 		std::cout << "Author: " << arr[i]->author << "\t";
 		std::cout << "Name: " << arr[i]->name << "\t";
 		std::cout << "Year: " << arr[i]->year << "\t";
 		std::cout << "Company: " << arr[i]->company << "\t";
 		std::cout << "Pages: " << arr[i]->pages << "\t";
-		std::cout << "\n";
+		std::cout << "\n\n";
 	}
 }
 
@@ -115,7 +117,7 @@ Book createNewStruct() {
 	item.company = Alpha();
 
 	std::cout << "Pages\t";
-	item.pages = Alpha();
+	item.pages = Digit();
 
 	return item;
 }
@@ -164,19 +166,20 @@ int Num(std::string s) {
 }
 
 void Search(Book** arr, const int& size) {
-	std::cout << "Write element of your structure\n";
+	std::cout << "Write element of your structure to search\n";
 	std::string element;
 	std::cin >> element;
 	bool status = false;
 	for (int i = 0; i < size; i++) {
 		if (arr[i]->id == element || arr[i]->author == element || arr[i]->name == element || arr[i]->year == element || arr[i]->company == element || arr[i]->pages == element) {
+			std::cout << "\n";
 			std::cout << "ID: " << arr[i]->id << "\t";
 			std::cout << "Author: " << arr[i]->author << "\t";
 			std::cout << "Name: " << arr[i]->name << "\t";
 			std::cout << "Year: " << arr[i]->year << "\t";
 			std::cout << "Company: " << arr[i]->company << "\t";
 			std::cout << "Pages: " << arr[i]->pages << "\t";
-			std::cout << "\n";
+			std::cout << "\n\n";
 			status = true;
 		}
 	}
@@ -318,6 +321,7 @@ int main()
 	std::cin >> break_element;
 	Book* arr = new Book[size]{};
 	for (int i = 0; i < size; i++) {
+		std::cout << "\n";
 		std::cout << "ID\t";
 		arr[i].id = Digit();
 
@@ -335,6 +339,7 @@ int main()
 
 		std::cout << "Pages\t";
 		arr[i].pages = Digit();
+		std::cout << "\n";
 
 		if (isThere(arr, size, break_element)) {
 			size = i + 1;
