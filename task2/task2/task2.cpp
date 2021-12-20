@@ -7,6 +7,38 @@ struct Work {
 	std::string id;
 };
 
+std::string Alpha() {
+	std::string s;
+	std::cin >> s;
+	bool status = true;
+	std::string example = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+	while (status) {
+		if (s.find_first_not_of(example) > s.size()) {
+			return s;
+		}
+		else {
+			std::cout << "!!!WRONG INPUT!!!\tTRY AGAIN\n";
+			s = Alpha();
+		}
+	}
+}
+
+std::string Digit() {
+	std::string s;
+	std::cin >> s;
+	bool status = true;
+	std::string example = "-0123456789";
+	while (status) {
+		if (s.find_first_not_of(example) > s.size()) {
+			return s;
+		}
+		else {
+			std::cout << "!!!WRONG INPUT!!!\tTRY AGAIN\n";
+			s = Digit();
+		}
+	}
+}
+
 void addStruct(Work*& arr, int& size, Work& item) {
 	Work* newArr = new Work[size + 1];
 	for (int i = 0; i < size; i++) {
@@ -25,19 +57,21 @@ void addStruct(Work*& arr, int& size, Work& item) {
 
 void showData(Work* arr, int& size) {
 	for (int i = 0; i < size; i++) {
+		std::cout << "\n";
 		std::cout << "Name: " << arr[i].name << "\t";
 		std::cout << "N: " << arr[i].n << "\t";
 		std::cout << "ID: " << arr[i].id << "\t";
-		std::cout << "\n";
+		std::cout << "\n\n";
 	}
 }
 
 void showData(Work** arr, int& size, const int& start) {
 	for (int i = start; i < size; i++) {
+		std::cout << "\n";
 		std::cout << "Name: " << arr[i]->name << "\t";
 		std::cout << "N: " << arr[i]->n << "\t";
 		std::cout << "ID: " << arr[i]->id << "\t";
-		std::cout << "\n";
+		std::cout << "\n\n";
 	}
 }
 

@@ -101,6 +101,7 @@ void showData(Book** arr, int& size, const int& start) {
 
 Book createNewStruct() {
 	Book item;
+	std::cout << "\n";
 	std::cout << "ID\t";
 	item.id = Digit();
 
@@ -118,6 +119,7 @@ Book createNewStruct() {
 
 	std::cout << "Pages\t";
 	item.pages = Digit();
+	std::cout << "\n";
 
 	return item;
 }
