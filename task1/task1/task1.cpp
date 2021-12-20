@@ -320,6 +320,7 @@ int main()
 	std::string break_element;
 	std::cin >> break_element;
 	Book* arr = new Book[size]{};
+
 	for (int i = 0; i < size; i++) {
 		std::cout << "\n";
 		std::cout << "ID\t";
@@ -346,6 +347,7 @@ int main()
 			break;
 		}
 	}
+
 	std::cout << "Do you want to add one more struct?\n1 (yes) / 2 (no)\n";
 	int k = CurrentInput();
 	Book item;
@@ -413,6 +415,7 @@ int main()
 		}
 			
 	}
+
 	int counter = 0;
 	shell_sort_up(array, size, counter);
 	showData(array, size, counter);
