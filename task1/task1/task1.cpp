@@ -172,7 +172,7 @@ void removeItem(Book** arr, const int& size) {
 				isChanged = true;
 			}
 			else {
-				arr[i]->id = "---";
+				arr[i]->id = "-1";
 				isChanged = true;
 			}
 		}
@@ -204,7 +204,7 @@ void removeItem(Book** arr, const int& size) {
 				isChanged = true;
 			}
 			else {
-				arr[i]->year = "---";
+				arr[i]->year = "-1";
 				isChanged = true;
 			}
 		}
@@ -224,7 +224,7 @@ void removeItem(Book** arr, const int& size) {
 				isChanged = true;
 			}
 			else {
-				arr[i]->pages = "---";
+				arr[i]->pages = "-1";
 				isChanged = true;
 			}
 		}
@@ -256,7 +256,7 @@ void shell_sort_up(Book** arr, const int& size, int& counter) {
 		}
 	}
 	for (int i = 0; i < size; i++) {
-		if (Num(arr[i]->year) < year)
+		if (Num(arr[i]->year) <= year)
 			counter++;
 	}
 }
@@ -340,9 +340,33 @@ int main()
 	Search(array, size);
 	removeItem(array, size);
 	showData(array, size, 0);
+	std::cout << "Do you want to change or delete more elements\n";
+	std::cout << "1. yes / 2. no\n";
+	int answer;
+	std::cin >> answer;
+	if (answer == 1) {
+		int t = 1;
+		removeItem(array, size);
+		showData(array, size, 0);
+		for (int i = 0; i < t; i++) {
+			std::cout << "more?\n";
+			std::cout << "1. yes / 2. no\n";
+			int l;
+		    std::cin >> l;
+			if (l == 1) {
+				removeItem(array, size);
+				showData(array, size, 0);
+				t++;
+			}
+			else {
+				break;
+			}
+		}
+			
+	}
 	int counter = 0;
 	shell_sort_up(array, size, counter);
-	showData(array, size, ++counter);
+	showData(array, size, counter);
 	delete[] arr;
 	return 0;
 }

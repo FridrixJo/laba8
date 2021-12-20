@@ -1,10 +1,17 @@
-﻿#include <typeinfo>
-#include <iostream>
+﻿#include <iostream>
+#include <fstream>
+
+struct Work {
+    std::string name;
+    std::string n;
+    std::string id;
+};
 
 int main()
 {
-    auto k = std::cin.get();
-    double a = std::cin.get();
-    std::cout << k << " " << a;
+    fstream fout;
+    fout.open("File.txt");
+    fout << "crufuhfhruhfr\n";
+    fout.close();
     return  0;
 }
