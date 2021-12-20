@@ -9,6 +9,49 @@ struct Book {
 	std::string pages;
 };
 
+std::string Alpha() {
+	std::string s;
+	std::cin >> s;
+	bool status = true;
+	std::string example = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+	while (status) {
+		if (s.find_first_not_of(example) > s.size()) {
+			return s;
+		}
+		else {
+			std::cout << "!!!WRONG INPUT!!!\tTRY AGAIN\n";
+			s = Alpha();
+		}
+	}
+}
+
+std::string Digit() {
+	std::string s;
+	std::cin >> s;
+	bool status = true;
+	std::string example = "-0123456789";
+	while (status) {
+		if (s.find_first_not_of(example) > s.size()) {
+			return s;
+		}
+		else {
+			std::cout << "!!!WRONG INPUT!!!\tTRY AGAIN\n";
+			s = Digit();
+		}
+	}
+}
+
+int CurrentInput() {
+	int a;
+	while (!(std::cin >> a) || a < 0) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits < std::streamsize > ::max(), '\n');
+		std::cout << "!!!WRONG INPUT!!!\tTRY AGAIN\n";
+	}
+	return a;
+}
+
+
 void addStruct(Book*& arr, int& size, Book& item) {
     Book* newArr = new Book[size + 1];
 	for (int i = 0; i < size; i++) {
@@ -57,22 +100,22 @@ void showData(Book** arr, int& size, const int& start) {
 Book createNewStruct() {
 	Book item;
 	std::cout << "ID\t";
-	std::cin >> item.id;
+	item.id = Digit();
 
 	std::cout << "Author\t";
-	std::cin >> item.author;
+    item.author = Alpha();
 
 	std::cout << "Name\t";
-	std::cin >> item.name;
+	item.name = Alpha();
 
 	std::cout << "Year\t";
-	std::cin >> item.year;
+	item.year = Digit();
 
 	std::cout << "Company\t";
-	std::cin >> item.company;
+	item.company = Alpha();
 
 	std::cout << "Pages\t";
-	std::cin >> item.pages;
+	item.pages = Alpha();
 
 	return item;
 }
@@ -156,18 +199,15 @@ void removeItem(Book** arr, const int& size) {
 	std::string element;
 	std::cin >> element;
 	std::cout << "1. delete / 2. change\n";
-	int choice;
-	std::cin >> choice;
+	int choice = CurrentInput();
 	std::string newStr = "";
-	if (choice == 2) {
-		std::cout << "Your new element\n";
-		std::cin >> newStr;
-	}
 	bool status = false;
 	for (int i = 0; i < size; i++) {
 		bool isChanged = false;
 		if (arr[i]->id == element) {
 			if (choice == 2) {
+				std::cout << "Your new ID element\n";
+				newStr = Digit();
 				arr[i]->id = newStr;
 				isChanged = true;
 			}
@@ -178,6 +218,8 @@ void removeItem(Book** arr, const int& size) {
 		}
 		if (arr[i]->author == element) {
 			if (choice == 2) {
+				std::cout << "Your new Author element\n";
+				newStr = Alpha();
 				arr[i]->author = newStr;
 				isChanged = true;
 			}
@@ -188,6 +230,8 @@ void removeItem(Book** arr, const int& size) {
 		}
 		if (arr[i]->name == element) {
 			if (choice == 2) {
+				std::cout << "Your new Name element\n";
+				newStr = Alpha();
 				arr[i]->name = newStr;
 				isChanged = true;
 			}
@@ -196,10 +240,10 @@ void removeItem(Book** arr, const int& size) {
 				isChanged = true;
 			}
 		}
-		if (arr[i]->year
-			
-			== element) {
+		if (arr[i]->year == element) {
 			if (choice == 2) {
+				std::cout << "Your new Year element\n";
+				newStr = Digit();
 				arr[i]->year = newStr;
 				isChanged = true;
 			}
@@ -210,6 +254,8 @@ void removeItem(Book** arr, const int& size) {
 		}
 		if (arr[i]->company == element) {
 			if (choice == 2) {
+				std::cout << "Your new Company element\n";
+				newStr = Alpha();
 				arr[i]->company = newStr;
 				isChanged = true;
 			}
@@ -220,6 +266,8 @@ void removeItem(Book** arr, const int& size) {
 		}
 		if (arr[i]->pages == element) {
 			if (choice == 2) {
+				std::cout << "Your new Pages element\n";
+				newStr = Digit();
 				arr[i]->pages = newStr;
 				isChanged = true;
 			}
@@ -237,10 +285,9 @@ void removeItem(Book** arr, const int& size) {
 	}
 }
 
-void shell_sort_up(Book** arr, const int& size, int& counter) {	
-	int year;
+void shell_sort_up(Book** arr, const int& size, int& counter) {
 	std::cout << "Write year for sorting\n";
-	std::cin >> year;
+	int year = CurrentInput();
 	int i, j, temp;
 	for (int step = size / 2; step > 0; step /= 2) {
 		for (i = step; i < size; i++) {
@@ -265,38 +312,38 @@ void shell_sort_up(Book** arr, const int& size, int& counter) {
 int main()
 {
 	std::cout << "Enter size\t";
-	int size;
-	std::cin >> size;
+	int size = CurrentInput();
 	std::cout << "Enter break element\t";
 	std::string break_element;
 	std::cin >> break_element;
 	Book* arr = new Book[size]{};
 	for (int i = 0; i < size; i++) {
 		std::cout << "ID\t";
-		std::cin >> arr[i].id;
+		arr[i].id = Digit();
 
 		std::cout << "Author\t";
-		std::cin >> arr[i].author;
+		arr[i].author = Alpha();
 
 		std::cout << "Name\t";
-		std::cin >> arr[i].name;
+		arr[i].name = Alpha();
 
 		std::cout << "Year\t";
-		std::cin >> arr[i].year;
+		arr[i].year = Digit();
 
 		std::cout << "Company\t";
-		std::cin >> arr[i].company;
+		arr[i].company = Alpha();
 
 		std::cout << "Pages\t";
-		std::cin >> arr[i].pages;
+		arr[i].pages = Digit();
+
 		if (isThere(arr, size, break_element)) {
+			size = i + 1;
 			break;
 		}
 	}
 	std::cout << "Do you want to add one more struct?\n1 (yes) / 2 (no)\n";
-	int k;
+	int k = CurrentInput();
 	Book item;
-	std::cin >> k;
 	switch (k) {
 	case 1:
 		item = createNewStruct();
@@ -313,8 +360,7 @@ int main()
 				addStruct(arr, size, item);
 				showData(arr, size);
 				std::cout << "One more?\n 1 (yes) / 2 (no)\n";
-				int condition;
-				std::cin >> condition;
+				int condition = CurrentInput();
 				if (condition == 1) {
 					n++;
 				}
@@ -342,8 +388,7 @@ int main()
 	showData(array, size, 0);
 	std::cout << "Do you want to change or delete more elements\n";
 	std::cout << "1. yes / 2. no\n";
-	int answer;
-	std::cin >> answer;
+	int answer = CurrentInput();
 	if (answer == 1) {
 		int t = 1;
 		removeItem(array, size);
@@ -351,8 +396,7 @@ int main()
 		for (int i = 0; i < t; i++) {
 			std::cout << "more?\n";
 			std::cout << "1. yes / 2. no\n";
-			int l;
-		    std::cin >> l;
+			int l = CurrentInput();
 			if (l == 1) {
 				removeItem(array, size);
 				showData(array, size, 0);
