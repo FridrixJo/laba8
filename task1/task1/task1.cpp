@@ -422,5 +422,6 @@ int main()
 	shell_sort_up(array, size, counter);
 	showData(array, size, counter);
 	delete[] arr;
+	delete[] array;
 	return 0;
 }

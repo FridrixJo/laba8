@@ -39,8 +39,18 @@ std::string Digit() {
 	}
 }
 
+int CurrentInput() {
+	int a;
+	while (!(std::cin >> a) || a < 0) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits < std::streamsize > ::max(), '\n');
+		std::cout << "!!!WRONG INPUT!!!\tTRY AGAIN\n";
+	}
+	return a;
+}
+
 void addStruct(Work*& arr, int& size, Work& item) {
-	Work* newArr = new Work[size + 1];
+	Work* newArr = (Work*)calloc((size + 1),sizeof(Work));
 	for (int i = 0; i < size; i++) {
 		newArr[i].name = arr[i].name;
 		newArr[i].n = arr[i].n;
@@ -51,7 +61,7 @@ void addStruct(Work*& arr, int& size, Work& item) {
 	newArr[size].id = item.id;
 
 	size++;
-	delete[] arr;
+	free(arr);
 	arr = newArr;
 }
 
@@ -77,6 +87,7 @@ void showData(Work** arr, int& size, const int& start) {
 
 Work createNewStruct() {
 	Work item;
+	std::cout << "\n";
 	std::cout << "Name\t";
 	std::cin >> item.name;
 
@@ -85,6 +96,7 @@ Work createNewStruct() {
 
 	std::cout << "ID\t";
 	std::cin >> item.id;
+	std::cout << "\n";
 
 	return item;
 }
@@ -139,10 +151,11 @@ void Search(Work** arr, const int& size) {
 	bool status = false;
 	for (int i = 0; i < size; i++) {
 		if (arr[i]->name == element || arr[i]->n == element || arr[i]->id == element) {
+			std::cout << "\n";
 			std::cout << "Name: " << arr[i]->name << "\t";
 			std::cout << "N: " << arr[i]->n << "\t";
 			std::cout << "ID: " << arr[i]->id << "\t";
-			std::cout << "\n";
+			std::cout << "\n\n";
 			status = true;
 		}
 	}
@@ -165,8 +178,7 @@ void removeItem(Work** arr, const int& size) {
 	std::string element;
 	std::cin >> element;
 	std::cout << "1. delete / 2. change\n";
-	int choice;
-	std::cin >> choice;
+	int choice = CurrentInput();
 	std::string newStr = "";
 	if (choice == 2) {
 		std::cout << "Your new element\n";
@@ -177,6 +189,8 @@ void removeItem(Work** arr, const int& size) {
 		bool isChanged = false;
 		if (arr[i]->name == element) {
 			if (choice == 2) {
+				std::cout << "Your new Name element\n";
+				newStr = Alpha();
 				arr[i]->name = newStr;
 				isChanged = true;
 			}
@@ -187,6 +201,8 @@ void removeItem(Work** arr, const int& size) {
 		}
 		if (arr[i]->n == element) {
 			if (choice == 2) {
+				std::cout << "Your new N element\n";
+				newStr = Digit();
 				arr[i]->n = newStr;
 				isChanged = true;
 			}
@@ -197,6 +213,8 @@ void removeItem(Work** arr, const int& size) {
 		}
 		if (arr[i]->id == element) {
 			if (choice == 2) {
+				std::cout << "Your new ID element\n";
+				newStr = Digit();
 				arr[i]->id = newStr;
 				isChanged = true;
 			}
@@ -211,6 +229,29 @@ void removeItem(Work** arr, const int& size) {
 	}
 }
 
+void shell_sort_up(Work** arr, const int& size, int& counter) {
+	std::cout << "Write year for sorting\n";
+	int year = CurrentInput();
+	int i, j, temp;
+	for (int step = size / 2; step > 0; step /= 2) {
+		for (i = step; i < size; i++) {
+			Work* temp = arr[i];
+			int tmp = Num(arr[i]->id);
+			for (j = i; j >= step; j -= step) {
+				if (tmp >= Num(arr[j - step]->id)) {
+					break;
+				}
+				arr[j] = arr[j - step];
+			}
+			arr[j] = temp;
+		}
+	}
+	for (int i = 0; i < size; i++) {
+		if (Num(arr[i]->id) <= year)
+			counter++;
+	}
+}
+
 
 int main()
 {
@@ -220,38 +261,30 @@ int main()
 	fout.close();
 
 	std::cout << "Enter size\t";
-	int size;
-	std::cin >> size;
+	int size = CurrentInput();
 	std::cout << "Enter break element\t";
 	std::string break_element;
 	std::cin >> break_element;
-	Work* arr = new Work[size]{};
+	Work* arr = (Work*)calloc(size, sizeof(Work));
+
 	for (int i = 0; i < size; i++) {
+		std::cout << "\n";
 		std::cout << "Name\t";
-		std::cin >> arr[i].name;
+		arr[i].name = Alpha();
 
 		std::cout << "N\t";
-		std::cin >> arr[i].n;
+		arr[i].n = Digit();
 
 		std::cout << "ID\t";
-		std::cin >> arr[i].id;
-
-		std::cout << "Year\t";
-		std::cin >> arr[i].year;
-
-		std::cout << "Company\t";
-		std::cin >> arr[i].company;
-
-		std::cout << "Pages\t";
-		std::cin >> arr[i].pages;
+		arr[i].id = Digit();
+		std::cout << "\n";
 		if (isThere(arr, size, break_element)) {
 			break;
 		}
 	}
 	std::cout << "Do you want to add one more struct?\n1 (yes) / 2 (no)\n";
-	int k;
-	Book item;
-	std::cin >> k;
+	int k = CurrentInput();
+	Work item;
 	switch (k) {
 	case 1:
 		item = createNewStruct();
@@ -263,13 +296,12 @@ int main()
 		if (q == 1) {
 			int n = 1;
 			for (int i = 0; i < n; i++) {
-				Book item;
+				Work item;
 				item = createNewStruct();
 				addStruct(arr, size, item);
 				showData(arr, size);
 				std::cout << "One more?\n 1 (yes) / 2 (no)\n";
-				int condition;
-				std::cin >> condition;
+				int condition = CurrentInput();
 				if (condition == 1) {
 					n++;
 				}
@@ -287,7 +319,7 @@ int main()
 		break;
 	}
 
-	Book** array = new Book * [size];
+	Work** array = (Work**)calloc(size, sizeof(Work*));
 	for (int i = 0; i < size; i++) {
 		array[i] = &arr[i];
 	}
@@ -322,7 +354,8 @@ int main()
 	int counter = 0;
 	shell_sort_up(array, size, counter);
 	showData(array, size, counter);
-	delete[] arr;
+	free(arr);
+	free(array);
 	return 0;
 	return  0;
 }
