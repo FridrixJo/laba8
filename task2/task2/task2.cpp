@@ -383,5 +383,4 @@ int main()
 	delete[] arr;
 	delete[] array;
 	return 0;
-	return  0;
 }
