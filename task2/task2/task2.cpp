@@ -50,7 +50,7 @@ int CurrentInput() {
 }
 
 void addStruct(Work*& arr, int& size, Work& item) {
-	Work* newArr = (Work*)calloc((size + 1),sizeof(Work));
+	Work* newArr = new Work[size + 1];
 	for (int i = 0; i < size; i++) {
 		newArr[i].name = arr[i].name;
 		newArr[i].n = arr[i].n;
@@ -61,7 +61,7 @@ void addStruct(Work*& arr, int& size, Work& item) {
 	newArr[size].id = item.id;
 
 	size++;
-	free(arr);
+	delete[] arr;
 	arr = newArr;
 }
 
@@ -85,17 +85,37 @@ void showData(Work** arr, int& size, const int& start) {
 	}
 }
 
+void showToFile(Work** arr, int& size) {
+	std::string way = "Output_File.txt";
+	std::ofstream fout;
+	fout.open(way);
+	if (!fout.is_open()) {
+		std::cout << "Error\n";
+	}
+	else {
+		std::cout << "File was opened\n";
+		for (int i = 0; i < size; i++) {
+			fout << "\n";
+			fout << "Name: " << arr[i]->name << "\t";
+			fout << "N: " << arr[i]->n << "\t";
+			fout << "ID: " << arr[i]->id << "\t";
+			fout << "\n\n";
+		}
+		fout.close();
+	}
+}
+
 Work createNewStruct() {
 	Work item;
 	std::cout << "\n";
 	std::cout << "Name\t";
-	std::cin >> item.name;
+	item.name = Alpha();
 
 	std::cout << "N\t";
-	std::cin >> item.n;
+	item.n = Digit();
 
 	std::cout << "ID\t";
-	std::cin >> item.id;
+	item.id = Digit();
 	std::cout << "\n";
 
 	return item;
@@ -180,10 +200,7 @@ void removeItem(Work** arr, const int& size) {
 	std::cout << "1. delete / 2. change\n";
 	int choice = CurrentInput();
 	std::string newStr = "";
-	if (choice == 2) {
-		std::cout << "Your new element\n";
-		std::cin >> newStr;
-	}
+
 	bool status = false;
 	for (int i = 0; i < size; i++) {
 		bool isChanged = false;
@@ -229,16 +246,14 @@ void removeItem(Work** arr, const int& size) {
 	}
 }
 
-void shell_sort_up(Work** arr, const int& size, int& counter) {
-	std::cout << "Write year for sorting\n";
-	int year = CurrentInput();
+void shell_sort_down(Work** arr, const int& size) {
 	int i, j, temp;
 	for (int step = size / 2; step > 0; step /= 2) {
 		for (i = step; i < size; i++) {
 			Work* temp = arr[i];
-			int tmp = Num(arr[i]->id);
+			int tmp = Num(arr[i]->n);
 			for (j = i; j >= step; j -= step) {
-				if (tmp >= Num(arr[j - step]->id)) {
+				if (tmp <= Num(arr[j - step]->n)) {
 					break;
 				}
 				arr[j] = arr[j - step];
@@ -246,26 +261,34 @@ void shell_sort_up(Work** arr, const int& size, int& counter) {
 			arr[j] = temp;
 		}
 	}
-	for (int i = 0; i < size; i++) {
-		if (Num(arr[i]->id) <= year)
-			counter++;
-	}
 }
 
 
 int main()
 {
-	std::ofstream fout;
-	setlocale(LC_ALL, "ru");
-	fout.open("File.txt");
-	fout.close();
+	std::string path = "Input_File.txt";
+	std::string file_var;
+	std::ifstream fin;
+    fin.open(path);
 
-	std::cout << "Enter size\t";
-	int size = CurrentInput();
+	if (!fin.is_open()) {
+		std::cout << "Error\n";
+	}
+	else {
+		std::cout << "File was opened\n";
+		while (!fin.eof()) {
+			fin >> file_var;
+		}
+	}
+	fin.close();
+
+	std::cout << "Enter size: \t";
+	int size = Num(file_var);
+	std::cout << size << "\n";
 	std::cout << "Enter break element\t";
 	std::string break_element;
 	std::cin >> break_element;
-	Work* arr = (Work*)calloc(size, sizeof(Work));
+	Work* arr = new Work[size];
 
 	for (int i = 0; i < size; i++) {
 		std::cout << "\n";
@@ -279,6 +302,7 @@ int main()
 		arr[i].id = Digit();
 		std::cout << "\n";
 		if (isThere(arr, size, break_element)) {
+			size = i + 1;
 			break;
 		}
 	}
@@ -319,7 +343,7 @@ int main()
 		break;
 	}
 
-	Work** array = (Work**)calloc(size, sizeof(Work*));
+	Work** array = new Work * [size];
 	for (int i = 0; i < size; i++) {
 		array[i] = &arr[i];
 	}
@@ -352,10 +376,12 @@ int main()
 
 	}
 	int counter = 0;
-	shell_sort_up(array, size, counter);
+	shell_sort_down(array, size);
+	std::cout << "Your sorted array\n";
 	showData(array, size, counter);
-	free(arr);
-	free(array);
+	showToFile(array, size);
+	delete[] arr;
+	delete[] array;
 	return 0;
 	return  0;
 }
