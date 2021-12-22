@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
-#include <string>2
+#include <string>
 #include <iomanip>
 
 std::ifstream fin("input.txt");
