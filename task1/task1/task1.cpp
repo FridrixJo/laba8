@@ -52,7 +52,7 @@ int CurrentInput() {
 }
 
 
-void addStruct(Book*& arr, int& size, Book& item) {
+void addStruct((Book*)& arr, int& size, Book& item) {
     Book* newArr = new Book[size + 1];
 	for (int i = 0; i < size; i++) {
 		newArr[i].id = arr[i].id;
